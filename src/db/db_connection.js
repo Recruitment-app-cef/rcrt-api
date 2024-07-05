@@ -5,11 +5,11 @@ require('dotenv').config()
 const db = require('knex')({
     client: 'pg',
     connection: {
-        host: process.env.HOST || 'localhost',
-        port: process.env.PORT || '5432',
-        user: process.env.USER || 'romer',
-        database: process.env.DB || 'master',
-        password: process.env.PWD || 'romer' 
+        host: 'localhost',
+        port: '5432',
+        user: 'postgres',
+        database: 'master',
+        password: 'romer' 
     }
 });
 
