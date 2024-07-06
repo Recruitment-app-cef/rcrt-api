@@ -16,15 +16,21 @@ const verifyUser = async(req, res) => {
       //chequeando si el usuario existe, si no existe se debe controlar el mensaje 
     if(user[0] == undefined || user[0] == [] || user[0] == ''){
         return res.status(404).json({status: 'error', message: 'Usuario no encontrado'})
-    }
+    }else{        
+            //verificando si el usuario encontrado es usuario de sistema
+            //en base a estas validaciones se dará una respuesta
+            var sysuser = await db('sys_x_persons').where('id', user[0].id)
+        
+            if(sysuser[0] == undefined || sysuser[0] == [] || sysuser[0] == ''){
+                console.log("entra")
+                return res.status(201).json({message: `OK, estudiante`, item: 'none'})
+            }else{
+                console.log("entra")
+                return res.status(201).json({message: `OK, usuario de sistema`, item: sysuser})
+            }
 
-    var sysuser = await db('sys_x_persons').where('id', user[0].id)
-
-    if(sysuser[0] == undefined || sysuser[0] == [] || sysuser[0] == ''){
-        return res.status(404).json({status:'error',message:'No es usuario de sistema'})
-    }else{
-        return res.status(201).json({message: 'OK'})
     }
+    
 
 }
 
