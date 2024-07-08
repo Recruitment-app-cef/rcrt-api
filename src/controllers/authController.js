@@ -22,10 +22,8 @@ const verifyUser = async(req, res) => {
             var sysuser = await db('sys_x_persons').where('id', user[0].id)
         
             if(sysuser[0] == undefined || sysuser[0] == [] || sysuser[0] == ''){
-                console.log("entra")
                 return res.status(201).json({message: `OK, estudiante`, item: 'none'})
             }else{
-                console.log("entra")
                 return res.status(201).json({message: `OK, usuario de sistema`, item: sysuser})
             }
 

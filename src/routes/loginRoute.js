@@ -1,7 +1,6 @@
 //importe de la librería de express para usar un enrutador
 const express = require('express')
-const 
-router = express.Router();
+const router = express.Router();
 
 //importe de las funciones del controlador de autenticación
 const {
