@@ -1,5 +1,7 @@
 //importe de las funciones utilizadas para administrar la db
 const db = require('../db/db_connection');
+//middleware para parsear json
+
 
 const verifyUser = async(req, res) => {
 

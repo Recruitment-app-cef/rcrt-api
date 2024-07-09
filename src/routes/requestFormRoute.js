@@ -9,6 +9,6 @@ const {
 
 //rutas utilizadas para la vista de front donde se ingresan o se obtienen
 //los datos del potencial instructor
-router.post('/saveRequest', saveRequestData)
+router.post('/save', saveRequestData)
 
 module.exports = router

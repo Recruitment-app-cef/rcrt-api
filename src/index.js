@@ -31,6 +31,7 @@ app.listen(db, () => {
 
 //rutas 
 const loginRoutes = require('./routes/loginRoute')
-
+const requestFormRoute = require('./routes/requestFormRoute')
 //llamada a las rutas
 app.use('/auth', loginRoutes)
+app.use('/request', requestFormRoute)
