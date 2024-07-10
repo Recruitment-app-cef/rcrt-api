@@ -59,28 +59,89 @@ const saveRequestData = async (req, res) => {
         comentario = ''
     }
 
+    //determinando el nivel académico de la persona
+    var nivestudio = ''
+    switch(mappedData[1].nivelestudio){
+        case 'Primer Ciclo': nivestudio = 1
+        case 'Segundo Ciclo': nivestudio = 2
+        case 'Tercer Ciclo': nivestudio = 3
+        case 'Cuarto Ciclo': nivestudio = 4
+        case 'Quinto Ciclo': nivestudio = 5
+        case 'Sexto Ciclo': nivestudio = 6
+        case 'Septimo Ciclo': nivestudio = 7
+        case 'Octavo Ciclo': nivestudio = 8
+        case 'Noveno Ciclo' : nivestudio = 9
+        case 'Decimo Ciclo' : nivestudio = 10 
+    }
+
     //guardando data en db
     try {
-        const response = await db('rcrt_all_elements').insert([{ idnumber: mappedData[0].carne },
-        { firstname: mappedData[0].nombres }, { lastname: mappedData[0].appellidos },
-        { carrera: mappedData[1].carrera },{address:''}, { deleted: '0' }, 
-        { comments: comentario },
-        { nmaterias: mappedData[1].materiasaprobadas }, { cum: mappedData[1].cum },
-        { niv_est: mappedData[1].vivelestudio }, { prim_op: mappedData[2].primeraopcion },
-        { experiencia: experiencia }, { fecha: fechaFormateada },
-        { nota: mappedData[2].nota1aopcion }, { es_remunerado: es_remunerado },
-        { seg_op: mappedData[2].segundaopcion }, { accepted: '11' }, { semester: mappedData[2].ciclo },
-        { confirmed: '0' }, { accepted_op: '1' }, { picture: archivo }, { nota_seg_op: 'null' }, { curso_aprobado: 'null' }
-        ]);
+        //verificando que el usuario ya está registrado en la DB
+        const verificandoQueExisteEnLaDB = await db('rcrt_all_elements')
+        .where('idnumber', mappedData[0].carne) 
 
-        if(response){
-            return res.status(201).json({message: "OK"})
+        if(verificandoQueExisteEnLaDB.length == 0){
+            const response = await db('rcrt_all_elements').returning('id').insert([
+            { idnumber: mappedData[0].carne ,
+            firstname: mappedData[0].nombres, 
+            lastname: mappedData[0].apellidos,
+            carrera: mappedData[1].carrera,
+            address:'none', 
+            deleted: 0, 
+            comments: comentario,
+            nmaterias: mappedData[1].materiasaprobadas,
+            cum: mappedData[1].cum,
+            niv_est: nivestudio,
+            prim_op: mappedData[2].primeraopcion,
+            experiencia: experiencia,
+            fecha: fechaFormateada,
+            nota: mappedData[2].nota1aopcion,
+            es_remunerado: es_remunerado,
+            seg_op: mappedData[2].segundaopcion,
+            accepted: 11,
+            semester: mappedData[2].ciclo,
+            confirmed: 0,
+            accepted_op: 1,
+            picture: archivo,
+            nota_seg_op: 0,
+            curso_aprobado: 0 }
+            ]).returning("*");
+    
+/*             console.log(response) */
+    
+            if(response){
+                return res.status(201).json({message: `OK, ${response}`})
+            }
+        }else{
+            return res.status(400).json({message: "Ya existe un registro en la DB"})
         }
+
     } catch (error) {
-        return res.status(400).json({status: error},{message: "Error al intentar crear la solicitud"})
+        console.log('Error al guardar la request',error)
+        return res.status(400).json({message: "Error al intentar crear la solicitud"})
     }
 }
 
+const getRequestData = async (req, res) => {
+    //obteniendo id del usuario de la request enviada
+    const identifier = req.body
+
+    console.log(identifier.id)
+
+    //buscando en la DB y obteniendo la data
+    const userData = await db('rcrt_all_elements')
+    .where('idnumber', identifier.id) 
+
+    if(userData.length == 0){
+        res.status(404).json({message: "Usuario no encontrado"})
+    }else{  
+        res.status(200).json({message: `Usuario encontrado
+            ${JSON.stringify(userData)}`})
+    }
+
+}
+
 module.exports = {
-    saveRequestData
+    saveRequestData,
+    getRequestData
 }
