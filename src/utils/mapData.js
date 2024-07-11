@@ -50,6 +50,69 @@ const mappingBookingData = (fields,data) => {
     },{})
 }
 
+//función para crear un arreglo de objetos para insertar en db con los emails
+//del usuario
+const mappingEmails = (emails, id) => {
+    const mappedEmails = emails.map((email, index) => ({
+            content_type: 2,
+            data: email,
+            element_id:id,
+            sort_order:index+1
+    }))
+
+    return mappedEmails
+}
+
+//función para crear una arreglo de objetos para insertar en db con 
+//las materias que cursará el usuario en el próximo ciclo
+const mappingSignatures = (signatures, id) => {
+    const mappedSignatures = signatures.map((signature, index) => ({
+        content_type:4,
+        data:signature,
+        element_id:id,
+        sort_order:index+1
+    }))
+
+    return mappedSignatures
+}
+
+
+//función para crear un arreglo de objetos para insertar en db con
+//los teléfonos, y opciones de colaboración del usuario
+const mappingContactsAndSignatures = (telefonofijo,telefonomovil,primeraopcion,segundaopcion, id) => {
+    const mappedArray = [
+        {
+            content_type: 6,
+            data: primeraopcion,
+            element_id: id,
+            sort_order:1
+        },
+        {
+            content_type: 6,
+            data: segundaopcion,
+            element_id: id,
+            sort_order:2
+        },
+        {    
+            content_type: 3,
+            data: telefonofijo,
+            element_id: id,
+            sort_order:1
+        },
+        {
+            content_type: 3,
+            data: telefonomovil,
+            element_id: id,
+            sort_order:2
+        }
+    ]
+
+    return mappedArray
+}
+
 module.exports = {
-    mapData
+    mapData,
+    mappingEmails,
+    mappingSignatures,
+    mappingContactsAndSignatures
 }

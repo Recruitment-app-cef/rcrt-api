@@ -106,10 +106,35 @@ const saveRequestData = async (req, res) => {
             nota_seg_op: 0,
             curso_aprobado: 0 }
             ]).returning("*");
-    
+
+            console.log(response[0].id)
+
+            //mapeando emails
+            const emailData = map.mappingEmails(mappedData[0].emails, response[0].id)
+
+            //mapeando materias
+            const signaturesData = map.mappingSignatures(mappedData[1].materiasproximas, response[0].id)
+
+            //mapeando telefonos y opciones a colaborar
+            const addingData = map.mappingContactsAndSignatures(
+                mappedData[0].telefonofijo,
+                mappedData[0].telefonomovil,
+                mappedData[2].primeraopcion,
+                mappedData[2].segundaopcion,
+                response[0].id
+            )
+
+            //creando arreglo final para query
+            const dataToQuery = [...emailData,...signaturesData,...addingData]
+            
+            //guardando datos de usuario en tabla de rcrt_elements_data
+            const saveData = await db("rcrt_elements_data").returning('id')
+            .insert(dataToQuery).returning('*')
 /*             console.log(response) */
-    
-            if(response){
+            
+            console.log(saveData)
+
+            if(response && saveData){
                 return res.status(201).json({message: `OK`})
             }
         }else{
