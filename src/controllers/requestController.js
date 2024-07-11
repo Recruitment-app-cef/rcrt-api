@@ -110,7 +110,7 @@ const saveRequestData = async (req, res) => {
 /*             console.log(response) */
     
             if(response){
-                return res.status(201).json({message: `OK, ${response}`})
+                return res.status(201).json({message: `OK`})
             }
         }else{
             return res.status(400).json({message: "Ya existe un registro en la DB"})
@@ -124,19 +124,16 @@ const saveRequestData = async (req, res) => {
 
 const getRequestData = async (req, res) => {
     //obteniendo id del usuario de la request enviada
-    const identifier = req.body
-
-    console.log(identifier.id)
+    const identifier = req.query.id
 
     //buscando en la DB y obteniendo la data
     const userData = await db('rcrt_all_elements')
-    .where('idnumber', identifier.id) 
+    .where('idnumber', identifier)   
 
     if(userData.length == 0){
         res.status(404).json({message: "Usuario no encontrado"})
     }else{  
-        res.status(200).json({message: `Usuario encontrado
-            ${JSON.stringify(userData)}`})
+        res.status(200).json({message: `OK`})
     }
 
 }
