@@ -107,8 +107,6 @@ const saveRequestData = async (req, res) => {
             curso_aprobado: 0 }
             ]).returning("*");
 
-            console.log(response[0].id)
-
             //mapeando emails
             const emailData = map.mappingEmails(mappedData[0].emails, response[0].id)
 
@@ -148,17 +146,27 @@ const saveRequestData = async (req, res) => {
 }
 
 const getRequestData = async (req, res) => {
-    //obteniendo id del usuario de la request enviada
+    
+    try{//obteniendo id del usuario de la request enviada
     const identifier = req.query.id
 
     //buscando en la DB y obteniendo la data
     const userData = await db('rcrt_all_elements')
     .where('idnumber', identifier)   
 
-    if(userData.length == 0){
+    console.log(userData)
+
+    const userMappedData = await db('rcrt_elements_data')
+    .where('element_id',userData[0].id)
+
+    console.log(userMappedData)
+
+    if(userData.length == 0 && userMappedData.length == 0){
         res.status(404).json({message: "Usuario no encontrado"})
     }else{  
-        res.status(200).json({message: `OK`})
+        res.status(200).json({"data": [...userData,...userMappedData]})
+    }}catch(error){
+        res.status(400).json({message: "error de autenticación"})
     }
 
 }
