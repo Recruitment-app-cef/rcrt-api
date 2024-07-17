@@ -3,9 +3,10 @@ const db = require('../db/db_connection');
 //módulo para obtener los archivos fuente de una ruta 
 const path = require('path')
 
-const map = require('../utils/mapData')
+const map = require('../utils/mapData');
 
 const saveRequestData = async (req, res) => {
+
     //obteniendo data proveniente de la request    
     const data = req.body.data
     
@@ -13,7 +14,7 @@ const saveRequestData = async (req, res) => {
     const personalData = data[0].value
     const academicData = data[1].value
     const bookingData = data[2].value
-    
+
     //enviando la información filtrada a mapearse y obteniendola
     const mappedData = map.mapData(personalData, academicData, bookingData)
 
@@ -37,18 +38,10 @@ const saveRequestData = async (req, res) => {
 
     //determinando si el aspirante desea ser instructor remunerado o no
     var es_remunerado = ''
-    if(mappedData[2].contratación == "remunerado"){
+    if(mappedData[2].contratacion == "remunerado" || mappedData[2].contratacion == "Remunerado"){
         es_remunerado = '1'
     }else{
         es_remunerado = '0'
-    }
-
-    //determinando si la persona colocó experiencia previa
-    var experiencia = ''
-    if(mappedData[1].experiencia != ''){
-        experiencia == mappedData[1].experiencia
-    }else{
-        experiencia = ''
     }
 
     //determinando si la persona colocó algún comentario extra
@@ -56,11 +49,11 @@ const saveRequestData = async (req, res) => {
     if(mappedData[2].comentario != ''){
         comentario = mappedData[2].comentario
     }else{
-        comentario = ''
+        comentario = 'sin comentarios'
     }
 
     //determinando el nivel académico de la persona
-    var nivestudio = ''
+    var nivestudio = 0
     switch(mappedData[1].nivelestudio){
         case 'Primer Ciclo': nivestudio = 1
         case 'Segundo Ciclo': nivestudio = 2
@@ -68,10 +61,10 @@ const saveRequestData = async (req, res) => {
         case 'Cuarto Ciclo': nivestudio = 4
         case 'Quinto Ciclo': nivestudio = 5
         case 'Sexto Ciclo': nivestudio = 6
-        case 'Septimo Ciclo': nivestudio = 7
+        case 'Séptimo Ciclo': nivestudio = 7
         case 'Octavo Ciclo': nivestudio = 8
         case 'Noveno Ciclo' : nivestudio = 9
-        case 'Decimo Ciclo' : nivestudio = 10 
+        case 'Décimo Ciclo' : nivestudio = 10 
     }
 
     //guardando data en db
@@ -93,12 +86,12 @@ const saveRequestData = async (req, res) => {
             cum: mappedData[1].cum,
             niv_est: nivestudio,
             prim_op: mappedData[2].primeraopcion,
-            experiencia: experiencia,
+            experiencia: mappedData[1].experiencia,
             fecha: fechaFormateada,
             nota: mappedData[2].nota1aopcion,
             es_remunerado: es_remunerado,
             seg_op: mappedData[2].segundaopcion,
-            accepted: 11,
+            accepted: 0,
             semester: mappedData[2].ciclo,
             confirmed: 0,
             accepted_op: 1,
@@ -109,10 +102,9 @@ const saveRequestData = async (req, res) => {
 
             //mapeando emails
             const emailData = map.mappingEmails(mappedData[0].emails, response[0].id)
-
+            
             //mapeando materias
             const signaturesData = map.mappingSignatures(mappedData[1].materiasproximas, response[0].id)
-
             //mapeando telefonos y opciones a colaborar
             const addingData = map.mappingContactsAndSignatures(
                 mappedData[0].telefonofijo,
@@ -121,16 +113,25 @@ const saveRequestData = async (req, res) => {
                 mappedData[2].segundaopcion,
                 response[0].id
             )
-
+            
             //creando arreglo final para query
-            const dataToQuery = [...emailData,...signaturesData,...addingData]
+            var dataToQuery = []
+            if(!Array.isArray(emailData)){
+                dataToQuery = [emailData,...signaturesData,...addingData]
+            }else if(!Array.isArray(emailData) && !Array.isArray(signaturesData)){
+                dataToQuery = [emailData, signaturesData,...addingData]
+            }else if(!Array.isArray(signaturesData)){
+                dataToQuery = [...emailData,signaturesData,...addingData]
+            }else{
+                dataToQuery = [...emailData,...signaturesData,...addingData]
+            }
             
             //guardando datos de usuario en tabla de rcrt_elements_data
             const saveData = await db("rcrt_elements_data").returning('id')
             .insert(dataToQuery).returning('*')
 /*             console.log(response) */
-            
-            console.log(saveData)
+
+            console.log(saveData, response)
 
             if(response && saveData){
                 return res.status(201).json({message: `OK`})
