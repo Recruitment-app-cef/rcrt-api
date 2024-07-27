@@ -1,3 +1,6 @@
+//importe de base de datos
+const db = require('../db/db_connection')
+
 //archivo destinado a realizar el mapeo de los datos obtenidos
 
 const mapData = (personalData, academicData, bookingData) => {
@@ -53,12 +56,12 @@ const mappingBookingData = (fields, data) => {
 //función para crear un arreglo de objetos para insertar en db con los emails
 //del usuario
 const mappingEmails = (emails, id) => {
-    
+
     if (!Array.isArray(emails)) {
         return {
-            content_type:2,
+            content_type: 2,
             data: emails,
-            element_id:id,
+            element_id: id,
             sort_order: 1
         }
     } else {
@@ -77,14 +80,14 @@ const mappingEmails = (emails, id) => {
 //las materias que cursará el usuario en el próximo ciclo
 const mappingSignatures = (signatures, id) => {
 
-    if(!Array.isArray(signatures)){
+    if (!Array.isArray(signatures)) {
         return {
             content_type: 4,
             data: signatures,
             element_id: id,
             sort_order: 1
         }
-    }else{
+    } else {
         const mappedSignatures = signatures.map((signature, index) => ({
             content_type: 4,
             data: signature,
@@ -93,7 +96,7 @@ const mappingSignatures = (signatures, id) => {
         }))
 
         return mappedSignatures
-    }    
+    }
 }
 
 
@@ -130,9 +133,46 @@ const mappingContactsAndSignatures = (telefonofijo, telefonomovil, primeraopcion
     return mappedArray
 }
 
+//función para devolver las solicitudes con la data 
+//extra anidada
+
+const mappingRequests = async (requests) => {
+    
+    //obteniendo identificadores de las solicitudes
+    const elementsData = requests.map((object) => {
+        return object.id
+    })
+    //obteniendo la data complementario de cada solicitud
+    const complementaryData = await Promise.all(elementsData.map(async (id) => {
+        return data = await db('rcrt_elements_data').where('element_id', id)
+    }))
+
+    //variable para sacar los items de la data complementaria
+    //esto se hace porque la data complementaria trae este formato:
+    // [[{},{},{}],[{},{},{}]]
+    const items = []
+
+    complementaryData.forEach(data => {
+        data.forEach(item => items.push(item))
+    })
+
+    const sendData = requests.map(request => {
+        const data = items.filter((item) => item.element_id === request.id)
+
+        if (data) {
+            return { ...request, data }
+        } else {
+            return request
+        }
+    })
+    return sendData
+}
+
+
 module.exports = {
     mapData,
     mappingEmails,
     mappingSignatures,
-    mappingContactsAndSignatures
+    mappingContactsAndSignatures,
+    mappingRequests
 }

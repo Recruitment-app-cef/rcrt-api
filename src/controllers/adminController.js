@@ -1,25 +1,45 @@
 //importe de las funciones utilizadas para administrar la db
 const db = require('../db/db_connection');
-const filter = require('../utils/filterOptions')
+const bookingFilter = require('../utils/filterOptions');
+const Query = require('../utils/queryClass');
 //función para obtener todas las solicitudes hechas en este nuevo ciclo
 const getRequests = async (req, res) => {
 
     try {
         let requests = []
 
-        const { bookingOption, cycle,
+        const { bookingOption, cycle, state,
             signature, firstOption, secondOption } = req.query
 
         //validación para controlar que se quiere filtrar por tipo de 
         //contratación
         if (bookingOption) {
-
-            const sendData = await filter.filterByBooking(bookingOption)
-            if (sendData) {
-                return res.status(200).json({ "data": sendData })
+            if (cycle) {
+                if (state) {
+                    const sendData = await bookingFilter.filterByBookingCycleState(
+                        bookingOption, cycle, state)
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+                } else {
+                    const sendData = await bookingFilter.filterByBookingCycle(bookingOption, cycle)
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+                }
             } else {
-                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                const sendData = await bookingFilter.filterByBooking(bookingOption)
+                if (sendData) {
+                    return res.status(200).json({ "data": sendData })
+                } else {
+                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                }
             }
+
 
         } else if (cycle) {
 
@@ -51,7 +71,7 @@ const getRequests = async (req, res) => {
                     return res.status(404).json({ message: 'solicitudes no encontradas' })
                 }
 
-            } else if (secondOption) {   
+            } else if (secondOption) {
 
                 const sendData = await filter.filterBySignature(signature, [secondOption])
                 if (sendData) {
@@ -109,6 +129,7 @@ const getRequests = async (req, res) => {
         console.error('Error al obtener las solicitudes: ', error)
         return res.status(500).json({ message: 'Error al obtener las solicitudes' })
     }
+
 }
 
 module.exports = {
