@@ -1,30 +1,40 @@
 //importe de las funciones utilizadas para administrar la db
 const db = require('../db/db_connection');
 const bookingFilter = require('../utils/filterOptions');
-const Query = require('../utils/queryClass');
+const cycleFilter = require('../utils/cycleFilterOptions')
+const stateFilter = require('../utils/stateFilterOptions')
+const map = require('../utils/mapData')
+const signatureFilter = require('../utils/signatureFilterOptions')
 //función para obtener todas las solicitudes hechas en este nuevo ciclo
 const getRequests = async (req, res) => {
 
     try {
         let requests = []
 
-        const { bookingOption, cycle, state,
-            signature, firstOption, secondOption } = req.query
-
+        const { booking, cycle, state,
+            signature, firstOption, secondOption,
+            idValidator } = req.query
         //validación para controlar que se quiere filtrar por tipo de 
         //contratación
-        if (bookingOption) {
+        if (booking) {
+
             if (cycle) {
-                if (state) {
+
+                if (state === "Aceptados y/o confirmados") {
+
                     const sendData = await bookingFilter.filterByBookingCycleState(
-                        bookingOption, cycle, state)
+                        booking, cycle, true)
+
                     if (sendData) {
                         return res.status(200).json({ "data": sendData })
                     } else {
                         return res.status(404).json({ message: 'solicitudes no encontradas' })
                     }
                 } else {
-                    const sendData = await bookingFilter.filterByBookingCycle(bookingOption, cycle)
+
+                    const sendData = await bookingFilter.filterByBookingCycleState(
+                        booking, cycle, false)
+
                     if (sendData) {
                         return res.status(200).json({ "data": sendData })
                     } else {
@@ -32,7 +42,9 @@ const getRequests = async (req, res) => {
                     }
                 }
             } else {
-                const sendData = await bookingFilter.filterByBooking(bookingOption)
+
+                const sendData = await bookingFilter.filterByBooking(booking)
+
                 if (sendData) {
                     return res.status(200).json({ "data": sendData })
                 } else {
@@ -43,28 +55,63 @@ const getRequests = async (req, res) => {
 
         } else if (cycle) {
 
-            const sendData = await filter.filterByCycle(cycle)
+            const sendData = await cycleFilter.filterByCycle(cycle)
+            
             if (sendData) {
                 return res.status(200).json({ "data": sendData })
             } else {
                 return res.status(404).json({ message: 'solicitudes no encontradas' })
             }
 
+        } else if (state) {
+
+            switch (state) {
+
+                case "Aceptados y/o confirmados": {
+
+                    if (idValidator) {
+
+                        const sendData = await stateFilter.filterByValidator(idValidator)
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    } else {
+
+                        const sendData = await stateFilter.filterByState(true)
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    }
+
+                }
+
+                case "No aceptados": {
+
+                    const sendData = await stateFilter.filterByState(false)
+
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+                }
+            }
+
         } else if (signature) {
 
             if (firstOption && secondOption) {
-                console.log("entra en primera opción y segunda opción")
-                const sendData = await filter.filterBySignature(signature, [firstOption, secondOption])
-                if (sendData) {
-                    return res.status(200).json({ "data": sendData })
-                } else {
-                    return res.status(404).json({ message: 'solicitudes no encontradas' })
-                }
 
+                const sendData = await signatureFilter.filterBySignature(signature,
+                    [firstOption, secondOption])
 
-            } else if (firstOption) {
-
-                const sendData = await filter.filterBySignature(signature, [firstOption])
                 if (sendData) {
                     return res.status(200).json({ "data": sendData })
                 } else {
@@ -73,7 +120,19 @@ const getRequests = async (req, res) => {
 
             } else if (secondOption) {
 
-                const sendData = await filter.filterBySignature(signature, [secondOption])
+                const sendData = await signatureFilter.filterBySignature(signature,
+                    [secondOption])
+
+                if (sendData) {
+                    return res.status(200).json({ "data": sendData })
+                } else {
+                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                }
+
+            } else if (firstOption) {
+
+                const sendData = await signatureFilter.filterBySignature(signature,
+                    [firstOption])
                 if (sendData) {
                     return res.status(200).json({ "data": sendData })
                 } else {
@@ -89,34 +148,9 @@ const getRequests = async (req, res) => {
                 .limit(10)
                 .orderBy('id', 'asc');
 
-            //obteniendo identificadores de las solicitudes
-            const elementsData = requests.map((object) => {
-                return object.id
-            })
-            //obteniendo la data complementario de cada solicitud
-            const complementaryData = await Promise.all(elementsData.map(async (id) => {
-                return data = await db('rcrt_elements_data').where('element_id', id)
-            }))
-
-            //variable para sacar los items de la data complementaria
-            //esto se hace porque la data complementaria trae este formato:
-            // [[{},{},{}],[{},{},{}]]
-            const items = []
-
-            complementaryData.forEach(data => {
-                data.forEach(item => items.push(item))
-            })
-
-            //anidando toda la data que se necesita para luego enviarla
-            const sendData = requests.map(request => {
-                const data = items.filter((item) => item.element_id === request.id)
-
-                if (data) {
-                    return { ...request, data }
-                } else {
-                    return request
-                }
-            })
+            //enviando información para anidar la data necesaria
+            //de cada solicitud encontrada
+            const sendData = await map.mappingRequests(requests)
 
             if (sendData) {
                 return res.status(200).json({ "data": sendData })
