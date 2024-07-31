@@ -14,6 +14,7 @@ const getRequests = async (req, res) => {
         const { booking, cycle, state,
             signature, firstOption, secondOption,
             idValidator } = req.query
+
         //validación para controlar que se quiere filtrar por tipo de 
         //contratación
         if (booking) {
@@ -128,12 +129,93 @@ const getRequests = async (req, res) => {
 
         } else if (cycle) {
 
-            const sendData = await cycleFilter.filterByCycle(cycle)
+            if (state) {
 
-            if (sendData) {
-                return res.status(200).json({ "data": sendData })
+                switch (state) {
+
+                    case "true": {
+
+                        if (idValidator) {
+
+                            const sendData = await cycleFilter.filterByCycleValidator(cycle, idValidator)
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        } else {
+
+                            const sendData = await cycleFilter.filterByCycleState(cycle, true)
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        }
+
+                    }
+
+                    case "false": {
+
+                        const sendData = await cycleFilter.filterByCycleState(cycle, false)
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    }
+                }
+            } else if (signature) {
+
+                if (firstOption && secondOption) {
+
+                    const sendData = await cycleFilter.filterByCycleSignature(cycle, signature,
+                        [firstOption, secondOption])
+
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+
+                } else if (secondOption) {
+
+                    const sendData = await cycleFilter.filterByCycleSignature(cycle, signature,
+                        [secondOption])
+
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+
+                } else if (firstOption) {
+
+                    const sendData = await cycleFilter.filterByCycleSignature(cycle, signature,
+                        [firstOption])
+
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+                }
             } else {
-                return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                const sendData = await cycleFilter.filterByCycle(cycle)
+
+                if (sendData) {
+                    return res.status(200).json({ "data": sendData })
+                } else {
+                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                }
+
             }
 
         } else if (state) {
@@ -142,7 +224,42 @@ const getRequests = async (req, res) => {
 
                 case "true": {
 
-                    if (idValidator) {
+                    if (signature) {
+
+                        if (firstOption && secondOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                [firstOption, secondOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        } else if (secondOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                [secondOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        } else if (firstOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                [firstOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+                        }
+                    } else if (idValidator) {
 
                         const sendData = await stateFilter.filterByValidator(idValidator)
 
@@ -168,12 +285,52 @@ const getRequests = async (req, res) => {
 
                 case "false": {
 
-                    const sendData = await stateFilter.filterByState(false)
+                    if (signature) {
 
-                    if (sendData) {
-                        return res.status(200).json({ "data": sendData })
-                    } else {
-                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        if (firstOption && secondOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(false, signature,
+                                [firstOption, secondOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        } else if (secondOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(false, signature,
+                                [secondOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        } else if (firstOption) {
+
+                            const sendData = await stateFilter.filterByStateSignature(false, signature,
+                                [firstOption])
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+                        }
+
+                    } else { 
+
+                        const sendData = await stateFilter.filterByState(false)
+    
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
                     }
 
                 }

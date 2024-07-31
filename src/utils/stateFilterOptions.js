@@ -38,7 +38,63 @@ const filterByValidator = async (idValidator) => {
 
         const sendData = await map.mappingRequests(requests)
         return sendData
-        
+
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+}
+
+//función para filtrar las solicitudes por estado y materia seleccionada
+
+const filterByStateSignature = async (state, signature, options) => {
+    let requests = []
+    let acceptedCondition = state ? '>' : '='
+    let acceptedValue = state ? 0 : 0
+
+    try {
+        switch (options.length) {
+            case 1: {
+                if (options[0] == "first") {
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            prim_op: signature
+                        })
+                        .where('accepted', acceptedCondition, acceptedValue)
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+                } else if (options[0] == "second") {
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            seg_op: signature
+                        })
+                        .where('accepted', acceptedCondition, acceptedValue)
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+                }
+            }
+            case 2: {
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        prim_op: signature,
+                        seg_op: signature
+                    })
+                    .where('accepted', acceptedCondition, acceptedValue)
+                    .limit(10)
+                    .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+            }
+        }
     } catch (error) {
         console.error("Error detectado al intentar buscar las solicitudes", error)
     }
@@ -46,5 +102,6 @@ const filterByValidator = async (idValidator) => {
 
 module.exports = {
     filterByState,
-    filterByValidator
+    filterByValidator,
+    filterByStateSignature
 }
