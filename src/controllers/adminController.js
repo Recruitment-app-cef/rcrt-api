@@ -21,12 +21,143 @@ const getRequests = async (req, res) => {
 
             if (cycle) {
 
-                const sendData = await bookingFilter.filterByBookingCycle(booking, cycle)
+                if (state) {
 
-                if (sendData) {
-                    return res.status(200).json({ "data": sendData })
+                    switch (state) {
+
+                        case "true": {
+
+                            if (signature) {
+
+                                if (firstOption && secondOption) {
+
+                                    const sendData = await bookingFilter
+                                        .filterByBookingCycleStateSignature(
+                                            booking, cycle, true, signature,
+                                            [firstOption, secondOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
+                                } else if (secondOption) {
+
+                                    const sendData = await bookingFilter
+                                        .filterByBookingCycleStateSignature(
+                                            booking, cycle, true, signature,
+                                            [secondOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
+                                } else if (firstOption) {
+
+                                    const sendData = await bookingFilter
+                                        .filterByBookingCycleStateSignature(
+                                            booking, cycle, true, signature,
+                                            [firstOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
+                                }
+
+                            } else if (idValidator) {
+
+                            } else {
+
+                                const sendData = await bookingFilter
+                                    .filterByBookingCycleState(booking, cycle, true)
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
+                            }
+
+                        }
+                        case "false": {
+
+                            const sendData = await bookingFilter
+                                .filterByBookingCycleState(booking, cycle, false)
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
+                        }
+
+                    }
+
+                } else if (signature) {
+
+                    if (firstOption && secondOption) {
+
+                        const sendData = await bookingFilter
+                            .filterByBookingCycleSignature(booking, cycle,
+                                signature, [firstOption, secondOption]
+                            )
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    } else if (secondOption) {
+
+                        const sendData = await bookingFilter
+                            .filterByBookingCycleSignature(booking, cycle,
+                                signature, [secondOption]
+                            )
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    } else if (firstOption) {
+
+                        const sendData = await bookingFilter
+                            .filterByBookingCycleSignature(booking, cycle,
+                                signature, [firstOption]
+                            )
+
+                        if (sendData) {
+                            return res.status(200).json({ "data": sendData })
+                        } else {
+                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+                        }
+
+                    }
+
                 } else {
-                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                    const sendData = await bookingFilter
+                        .filterByBookingCycle(booking, cycle)
+
+                    if (sendData) {
+                        return res.status(200).json({ "data": sendData })
+                    } else {
+                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                    }
+
                 }
 
             } else if (state) {
@@ -321,10 +452,10 @@ const getRequests = async (req, res) => {
                             }
                         }
 
-                    } else { 
+                    } else {
 
                         const sendData = await stateFilter.filterByState(false)
-    
+
                         if (sendData) {
                             return res.status(200).json({ "data": sendData })
                         } else {
@@ -400,25 +531,3 @@ const getRequests = async (req, res) => {
 module.exports = {
     getRequests,
 }
-
-/*                 if (state === "Aceptados y/o confirmados") {
-
-                    const sendData = await bookingFilter.filterByBookingCycleState(
-                        booking, cycle, true)
-
-                    if (sendData) {
-                        return res.status(200).json({ "data": sendData })
-                    } else {
-                        return res.status(404).json({ message: 'solicitudes no encontradas' })
-                    }
-                } else {
-
-                    const sendData = await bookingFilter.filterByBookingCycleState(
-                        booking, cycle, false)
-
-                    if (sendData) {
-                        return res.status(200).json({ "data": sendData })
-                    } else {
-                        return res.status(404).json({ message: 'solicitudes no encontradas' })
-                    }
-                } */
