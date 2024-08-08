@@ -166,6 +166,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+                            
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -210,6 +211,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -253,6 +255,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -419,6 +422,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -466,6 +470,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -512,6 +517,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -580,6 +586,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -591,6 +598,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 .where('accepted', acceptedCondition, acceptedValue)
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -605,6 +616,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                             .where('accepted', acceptedCondition, acceptedValue)
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
@@ -621,6 +636,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 .where('accepted', acceptedCondition, acceptedValue)
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -631,6 +650,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 .where('accepted', acceptedCondition, acceptedValue)
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -644,6 +667,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                             .where('accepted', acceptedCondition, acceptedValue)
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
@@ -661,6 +688,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 .where('accepted', acceptedCondition, acceptedValue)
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -672,6 +703,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 .where('accepted', acceptedCondition, acceptedValue)
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -686,6 +721,10 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                             .where('accepted', acceptedCondition, acceptedValue)
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
@@ -713,6 +752,10 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                     })
                     .limit(10)
                     .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+
             }
             case "Ambas": {
                 requests = await db('rcrt_all_elements')
@@ -723,6 +766,10 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                     })
                     .limit(10)
                     .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+
             }
             case "Por horas sociales": {
                 requests = await db('rcrt_all_elements')
@@ -734,6 +781,10 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                     })
                     .limit(10)
                     .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+
             }
         }
     } catch (error) {
@@ -765,6 +816,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -776,6 +831,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -790,6 +849,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                             })
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
@@ -806,6 +869,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -816,6 +883,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -829,6 +900,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                             })
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
@@ -846,6 +921,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -857,6 +936,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 })
                                 .limit(10)
                                 .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
                         }
                     }
                     case 2: {
@@ -871,6 +954,10 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                             })
                             .limit(10)
                             .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
                     }
                 }
             }
