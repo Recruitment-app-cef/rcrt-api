@@ -166,7 +166,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
 
                             const sendData = await map.mappingRequests(requests)
                             return sendData
-                            
+
                         } else if (options[0] == "second") {
                             requests = await db('rcrt_all_elements')
                                 .select('*')
@@ -291,6 +291,356 @@ const filterByBookingSignature = async (booking, signature, options) => {
     catch (error) {
         console.error("Error detectado al intentar buscar las solicitudes", error)
     }
+}
+
+//función para filtrar solicitudes por contratación, estado y asignatura
+//en primera, segunda o ambas opciones de aplicación
+
+const filterByBookingStateSignature = async (booking, state, signature, options) => {
+    let requests = []
+    let acceptedCondition = state ? '>' : '='
+    let acceptedValue = state ? 0 : 0
+
+    try {
+        switch (booking) {
+            case "Remunerado": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature,
+                                    es_remunerado: 1
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature,
+                                    es_remunerado: 1
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                prim_op: signature,
+                                seg_op: signature,
+                                es_remunerado: 1
+                            })
+                            .where('accepted', acceptedCondition, acceptedValue)
+                            .limit(10)
+                            .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
+                    }
+                }
+            }
+            case "Ambas": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                prim_op: signature,
+                                seg_op: signature
+                            })
+                            .where('accepted', acceptedCondition, acceptedValue)
+                            .limit(10)
+                            .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
+                    }
+                }
+            }
+            case "Por horas sociales": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature,
+                                    es_remunerado: 0
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature,
+                                    es_remunerado: 0
+                                })
+                                .where('accepted', acceptedCondition, acceptedValue)
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                prim_op: signature,
+                                seg_op: signature,
+                                es_remunerado: 0
+                            })
+                            .where('accepted', acceptedCondition, acceptedValue)
+                            .limit(10)
+                            .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+}
+
+//función para filtrar solicitudes por contratación, asignatura
+//en primera, segundao ambas opciones y validador
+
+const filterByBookingSignatureValidator = async (booking, signature,
+    options, idValidator) => {
+    let requests = []
+
+    try {
+        switch (booking) {
+            case "Remunerado": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature,
+                                    es_remunerado: 1,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature,
+                                    es_remunerado: 1,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                prim_op: signature,
+                                seg_op: signature,
+                                es_remunerado: 1,
+                                accepted: idValidator
+                            })
+                            .limit(10)
+                            .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
+                    }
+                }
+            }
+            case "Ambas": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                prim_op: signature,
+                                seg_op: signature,
+                                accepted: idValidator
+                            })
+                            .limit(10)
+                            .orderBy('id', 'asc');
+
+                        const sendData = await map.mappingRequests(requests)
+                        return sendData
+
+                    }
+                }
+            }
+            case "Por horas sociales": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    prim_op: signature,
+                                    es_remunerado: 0,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        } else if (options[0] == "second") {
+
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    seg_op: signature,
+                                    es_remunerado: 0,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+
+                            const sendData = await map.mappingRequests(requests)
+                            return sendData
+
+                        }
+                    }
+                    case 2: {
+
+                        requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            prim_op: signature,
+                            seg_op: signature,
+                            es_remunerado: 0,
+                            accepted: idValidator
+                        })
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+
 }
 
 //función para filtrar solicitudes por contratación y validador
@@ -979,5 +1329,7 @@ module.exports = {
     filterByBookingCycleSignature,
     filterByBookingCycleStateSignature,
     filterByBookingCycleValidator,
-    filterByBookingCycleSignatureValidator
+    filterByBookingCycleSignatureValidator,
+    filterByBookingStateSignature,
+    filterByBookingSignatureValidator
 }
