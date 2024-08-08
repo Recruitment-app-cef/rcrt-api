@@ -696,6 +696,192 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
 
 }
 
+//función para filtrar por contratación, ciclo y validador
+const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
+
+    let requests = []
+
+    try {
+        switch (booking) {
+            case "Remunerado": {
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        es_remunerado: 1,
+                        semester: cycle,
+                        accepted: idValidator
+                    })
+                    .limit(10)
+                    .orderBy('id', 'asc');
+            }
+            case "Ambas": {
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        semester: cycle,
+                        accepted: idValidator
+                    })
+                    .limit(10)
+                    .orderBy('id', 'asc');
+            }
+            case "Por horas sociales": {
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        es_remunerado: 0,
+                        semester: cycle,
+                        accepted: idValidator
+                    })
+                    .limit(10)
+                    .orderBy('id', 'asc');
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+
+}
+
+//función para filtrar por contratación, ciclo, asignatura y validador
+const filterByBookingCycleSignatureValidator = async (booking, cycle,
+    signature, options, idValidator
+) => {
+
+    let requests = []
+
+    try {
+        switch (booking) {
+            case "Remunerado": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    es_remunerado: 1,
+                                    semester: cycle,
+                                    prim_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        } else if (options[0] == "second") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    es_remunerado: 1,
+                                    semester: cycle,
+                                    seg_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        }
+                    }
+                    case 2: {
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                es_remunerado: 1,
+                                semester: cycle,
+                                prim_op: signature,
+                                seg_op: signature,
+                                accepted: idValidator
+                            })
+                            .limit(10)
+                            .orderBy('id', 'asc');
+                    }
+                }
+            }
+            case "Ambas": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    semester: cycle,
+                                    prim_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        } else if (options[0] == "second") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    semester: cycle,
+                                    seg_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        }
+                    }
+                    case 2: {
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                semester: cycle,
+                                prim_op: signature,
+                                seg_op: signature,
+                                accepted: idValidator
+                            })
+                            .limit(10)
+                            .orderBy('id', 'asc');
+                    }
+                }
+            }
+            case "Por horas sociales": {
+                switch (options.length) {
+                    case 1: {
+                        if (options[0] == "first") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    es_remunerado: 0,
+                                    semester: cycle,
+                                    prim_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        } else if (options[0] == "second") {
+                            requests = await db('rcrt_all_elements')
+                                .select('*')
+                                .where({
+                                    es_remunerado: 0,
+                                    semester: cycle,
+                                    seg_op: signature,
+                                    accepted: idValidator
+                                })
+                                .limit(10)
+                                .orderBy('id', 'asc');
+                        }
+                    }
+                    case 2: {
+                        requests = await db('rcrt_all_elements')
+                            .select('*')
+                            .where({
+                                es_remunerado: 0,
+                                semester: cycle,
+                                prim_op: signature,
+                                seg_op: signature,
+                                accepted: idValidator
+                            })
+                            .limit(10)
+                            .orderBy('id', 'asc');
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+
+}
+
+
 module.exports = {
     filterByBooking,
     filterByBookingCycle,
@@ -704,5 +890,7 @@ module.exports = {
     filterByBookingValidator,
     filterByBookingCycleState,
     filterByBookingCycleSignature,
-    filterByBookingCycleStateSignature
+    filterByBookingCycleStateSignature,
+    filterByBookingCycleValidator,
+    filterByBookingCycleSignatureValidator
 }
