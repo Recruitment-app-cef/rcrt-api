@@ -58,7 +58,7 @@ const filterByCycleSignature = async (cycle, signature, options) => {
                     requests = await db('rcrt_all_elements')
                         .select('*')
                         .where({
-                            prim_op: signature, 
+                            prim_op: signature,
                             semester: cycle
                         })
                         .limit(10)
@@ -125,10 +125,143 @@ const filterByCycleValidator = async (cycle, idValidator) => {
 
 }
 
+//función para filtrar por ciclo, estado y asignatura
+//en primera, segunda y ambas opciones
+
+const filterByCycleStateSignature = async (cycle, state, signature, options) => {
+    let requests = []
+    let acceptedCondition = state ? '>' : '='
+    let acceptedValue = state ? 0 : 0
+
+    try {
+        switch (options.length) {
+            case 1: {
+                if (options[0] == "first") {
+
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            semester: cycle,
+                            prim_op: signature
+                        })
+                        .where('accepted', acceptedCondition, acceptedValue)
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+
+                } else if (options[0] == "second") {
+
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            semester: cycle,
+                            seg_op: signature
+                        })
+                        .where('accepted', acceptedCondition, acceptedValue)
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+
+                }
+            }
+            case 2: {
+
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        semester: cycle,
+                        prim_op: signature,
+                        seg_op: signature
+                    })
+                    .where('accepted', acceptedCondition, acceptedValue)
+                    .limit(10)
+                    .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+
+}
+
+//función para filtrar por ciclo, asignatura en primera
+//segunda o ambas opciones y validador
+
+const filterByCycleSignatureValidator = async (cycle, signature, options, idValidator) => {
+    let requests = []
+
+    try {
+        switch (options.length) {
+            case 1: {
+                if (options[0] == "first") {
+
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            semester: cycle,
+                            prim_op: signature,
+                            accepted: idValidator
+                        })
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+
+                } else if (options[0] == "second") {
+
+                    requests = await db('rcrt_all_elements')
+                        .select('*')
+                        .where({
+                            semester: cycle,
+                            seg_op: signature,
+                            accepted: idValidator
+                        })
+                        .limit(10)
+                        .orderBy('id', 'asc');
+
+                    const sendData = await map.mappingRequests(requests)
+                    return sendData
+
+                }
+            }
+            case 2: {
+
+                requests = await db('rcrt_all_elements')
+                    .select('*')
+                    .where({
+                        semester: cycle,
+                        prim_op: signature,
+                        seg_op: signature,
+                        accepted: idValidator
+                    })
+                    .limit(10)
+                    .orderBy('id', 'asc');
+
+                const sendData = await map.mappingRequests(requests)
+                return sendData
+
+            }
+        }
+    } catch (error) {
+        console.error("Error detectado al intentar buscar las solicitudes", error)
+    }
+
+}
 
 module.exports = {
     filterByCycle,
     filterByCycleState,
     filterByCycleSignature,
-    filterByCycleValidator
+    filterByCycleValidator,
+    filterByCycleStateSignature,
+    filterByCycleSignatureValidator
 }

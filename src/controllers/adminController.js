@@ -532,15 +532,61 @@ const getRequests = async (req, res) => {
 
                                 if (idValidator) {
 
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignatureValidator(
+                                            cycle, signature, [firstOption,
+                                            secondOption], idValidator
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
                                 } else {
-                                    
+
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignature(cycle, signature,
+                                            [firstOption, secondOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
                                 }
 
                             } else if (secondOption) {
 
                                 if (idValidator) {
 
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignatureValidator(
+                                            cycle, signature, [secondOption],
+                                            idValidator
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
                                 } else {
+
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignature(cycle, signature,
+                                            [secondOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
 
                                 }
 
@@ -548,7 +594,30 @@ const getRequests = async (req, res) => {
 
                                 if (idValidator) {
 
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignatureValidator(
+                                            cycle, signature, [firstOption],
+                                            idValidator
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
+
                                 } else {
+
+                                    const sendData = await cycleFilter
+                                        .filterByCycleSignature(cycle, signature,
+                                            [firstOption]
+                                        )
+
+                                    if (sendData) {
+                                        return res.status(200).json({ "data": sendData })
+                                    } else {
+                                        return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                    }
 
                                 }
 
@@ -566,26 +635,12 @@ const getRequests = async (req, res) => {
 
                         } else {
 
-                            if (signature) {
+                            const sendData = await cycleFilter.filterByCycleState(cycle, true)
 
-                                if (firstOption && secondOption) {
-
-                                } else if (secondOption) {
-
-                                } else if (firstOption) {
-
-                                }
-
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
                             } else {
-
-                                const sendData = await cycleFilter.filterByCycleState(cycle, true)
-
-                                if (sendData) {
-                                    return res.status(200).json({ "data": sendData })
-                                } else {
-                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
-                                }
-
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
                             }
 
                         }
