@@ -649,12 +649,59 @@ const getRequests = async (req, res) => {
 
                     case "false": {
 
-                        const sendData = await cycleFilter.filterByCycleState(cycle, false)
+                        if (signature) {
 
-                        if (sendData) {
-                            return res.status(200).json({ "data": sendData })
+                            if (firstOption && secondOption) {
+
+                                const sendData = await cycleFilter
+                                    .filterByCycleStateSignature(cycle, false, signature,
+                                        [firstOption, secondOption]
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
+                            } else if (secondOption) {
+
+                                const sendData = await cycleFilter
+                                    .filterByCycleStateSignature(cycle, false, signature,
+                                        [secondOption]
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
+                            } else if (firstOption) {
+
+                                const sendData = await cycleFilter
+                                    .filterByCycleStateSignature(cycle, false, signature,
+                                        [firstOption]
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
+                            }
+
                         } else {
-                            return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                            const sendData = await cycleFilter.filterByCycleState(cycle, false)
+
+                            if (sendData) {
+                                return res.status(200).json({ "data": sendData })
+                            } else {
+                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+                            }
+
                         }
 
                     }
@@ -716,13 +763,20 @@ const getRequests = async (req, res) => {
 
                         if (firstOption && secondOption) {
 
-                            const sendData = await stateFilter.filterByStateSignature(true, signature,
-                                [firstOption, secondOption])
+                            if (idValidator) {
 
-                            if (sendData) {
-                                return res.status(200).json({ "data": sendData })
+
                             } else {
-                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                                const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                    [firstOption, secondOption])
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
                             }
 
                         } else if (secondOption) {
