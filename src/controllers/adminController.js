@@ -765,6 +765,17 @@ const getRequests = async (req, res) => {
 
                             if (idValidator) {
 
+                                const sendData = await stateFilter
+                                    .filterBySignatureValidator(
+                                        signature, [firstOption, secondOption],
+                                        idValidator
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
 
                             } else {
 
@@ -781,25 +792,63 @@ const getRequests = async (req, res) => {
 
                         } else if (secondOption) {
 
-                            const sendData = await stateFilter.filterByStateSignature(true, signature,
-                                [secondOption])
+                            if (idValidator) {
 
-                            if (sendData) {
-                                return res.status(200).json({ "data": sendData })
+                                const sendData = await stateFilter
+                                    .filterBySignatureValidator(
+                                        signature, [secondOption],
+                                        idValidator
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
                             } else {
-                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                                const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                    [secondOption])
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
                             }
+
 
                         } else if (firstOption) {
 
-                            const sendData = await stateFilter.filterByStateSignature(true, signature,
-                                [firstOption])
+                            if (idValidator) {
 
-                            if (sendData) {
-                                return res.status(200).json({ "data": sendData })
+                                const sendData = await stateFilter
+                                    .filterBySignatureValidator(
+                                        signature, [firstOption],
+                                        idValidator
+                                    )
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
                             } else {
-                                return res.status(404).json({ message: 'solicitudes no encontradas' })
+
+                                const sendData = await stateFilter.filterByStateSignature(true, signature,
+                                    [firstOption])
+
+                                if (sendData) {
+                                    return res.status(200).json({ "data": sendData })
+                                } else {
+                                    return res.status(404).json({ message: 'solicitudes no encontradas' })
+                                }
+
                             }
+
                         }
                     } else if (idValidator) {
 
