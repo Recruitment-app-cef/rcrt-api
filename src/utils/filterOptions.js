@@ -14,7 +14,7 @@ const filterByBooking = async (bookingOption) => {
                 requests = await db('rcrt_all_elements')
                     .select('*')
                     .where('es_remunerado', 1)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -23,7 +23,7 @@ const filterByBooking = async (bookingOption) => {
             case "Ambas": {
                 requests = await db('rcrt_all_elements')
                     .select('*')
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -33,7 +33,7 @@ const filterByBooking = async (bookingOption) => {
                 requests = await db('rcrt_all_elements')
                     .select('*')
                     .where('es_remunerado', 0)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -60,7 +60,7 @@ const filterByBookingCycle = async (bookingOption, cycle) => {
                         es_remunerado: 1,
                         semester: cycle
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -70,7 +70,7 @@ const filterByBookingCycle = async (bookingOption, cycle) => {
                 requests = await db('rcrt_all_elements')
                     .select('*')
                     .where('semester', cycle)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -83,7 +83,7 @@ const filterByBookingCycle = async (bookingOption, cycle) => {
                         es_remunerado: 0,
                         semester: cycle
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -110,7 +110,7 @@ const filterByBookingState = async (booking, state) => {
                     .select('*')
                     .where('es_remunerado', 1)
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -120,7 +120,7 @@ const filterByBookingState = async (booking, state) => {
                 requests = await db('rcrt_all_elements')
                     .select('*')
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -131,7 +131,7 @@ const filterByBookingState = async (booking, state) => {
                     .select('*')
                     .where('es_remunerado', 0)
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -161,7 +161,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                     prim_op: signature,
                                     es_remunerado: 1
                                 })
-                                .limit(10)
+                                .limit(20)                                
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -174,7 +174,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                     seg_op: signature,
                                     es_remunerado: 1
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -189,7 +189,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                 seg_op: signature,
                                 es_remunerado: 1
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -206,7 +206,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                 .where({
                                     prim_op: signature,
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -218,7 +218,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                 .where({
                                     seg_op: signature,
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -232,7 +232,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                 prim_op: signature,
                                 seg_op: signature,
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -250,7 +250,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                     prim_op: signature,
                                     es_remunerado: 0
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -263,7 +263,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                     seg_op: signature,
                                     es_remunerado: 0
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -278,7 +278,7 @@ const filterByBookingSignature = async (booking, signature, options) => {
                                 seg_op: signature,
                                 es_remunerado: 0
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -315,7 +315,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     es_remunerado: 1
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -330,7 +330,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     es_remunerado: 1
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -348,7 +348,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                 es_remunerado: 1
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -368,7 +368,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     prim_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -382,7 +382,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     seg_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -399,7 +399,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                 seg_op: signature
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -420,7 +420,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     es_remunerado: 0
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -435,7 +435,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                     es_remunerado: 0
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -453,7 +453,7 @@ const filterByBookingStateSignature = async (booking, state, signature, options)
                                 es_remunerado: 0
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -489,7 +489,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     es_remunerado: 1,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -504,7 +504,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     es_remunerado: 1,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -522,7 +522,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                 es_remunerado: 1,
                                 accepted: idValidator
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -542,7 +542,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     prim_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -556,7 +556,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     seg_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -573,7 +573,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                 seg_op: signature,
                                 accepted: idValidator
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -594,7 +594,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     es_remunerado: 0,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -609,7 +609,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                                     es_remunerado: 0,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -627,7 +627,7 @@ const filterByBookingSignatureValidator = async (booking, signature,
                             es_remunerado: 0,
                             accepted: idValidator
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -655,7 +655,7 @@ const filterByBookingValidator = async (booking, idValidator) => {
                     .select('*')
                     .where('es_remunerado', 1)
                     .where('accepted', '=', idValidator)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -665,7 +665,7 @@ const filterByBookingValidator = async (booking, idValidator) => {
                 requests = await db('rcrt_all_elements')
                     .select('*')
                     .where('accepted', '=', idValidator)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -676,7 +676,7 @@ const filterByBookingValidator = async (booking, idValidator) => {
                     .select('*')
                     .where('es_remunerado', 0)
                     .where('accepted', '=', idValidator)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -707,7 +707,7 @@ const filterByBookingCycleState = async (bookingOption, cycle, state) => {
                         semester: cycle,
                     })
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -720,7 +720,7 @@ const filterByBookingCycleState = async (bookingOption, cycle, state) => {
                         semester: cycle,
                     })
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -734,7 +734,7 @@ const filterByBookingCycleState = async (bookingOption, cycle, state) => {
                         semester: cycle,
                     })
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -767,7 +767,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     prim_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -781,7 +781,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     seg_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -797,7 +797,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                 prim_op: signature,
                                 seg_op: signature
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -815,7 +815,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     prim_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -828,7 +828,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     seg_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -843,7 +843,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                 prim_op: signature,
                                 seg_op: signature
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -862,7 +862,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     prim_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -876,7 +876,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                     semester: cycle,
                                     seg_op: signature
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -892,7 +892,7 @@ const filterByBookingCycleSignature = async (booking, cycle, signature, options)
                                 prim_op: signature,
                                 seg_op: signature
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -931,7 +931,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     prim_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -946,7 +946,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     seg_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -964,7 +964,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 seg_op: signature
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -984,7 +984,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     prim_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -998,7 +998,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     seg_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1015,7 +1015,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 seg_op: signature
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -1036,7 +1036,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     prim_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1051,7 +1051,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                     seg_op: signature
                                 })
                                 .where('accepted', acceptedCondition, acceptedValue)
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1069,7 +1069,7 @@ const filterByBookingCycleStateSignature = async (booking, cycle, state,
                                 seg_op: signature
                             })
                             .where('accepted', acceptedCondition, acceptedValue)
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -1100,7 +1100,7 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                         semester: cycle,
                         accepted: idValidator
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -1114,7 +1114,7 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                         semester: cycle,
                         accepted: idValidator
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -1129,7 +1129,7 @@ const filterByBookingCycleValidator = async (booking, cycle, idValidator) => {
                         semester: cycle,
                         accepted: idValidator
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -1164,7 +1164,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                     prim_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1197,7 +1197,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 seg_op: signature,
                                 accepted: idValidator
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -1217,7 +1217,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                     prim_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1231,7 +1231,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                     seg_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1248,7 +1248,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 seg_op: signature,
                                 accepted: idValidator
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)
@@ -1269,7 +1269,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                     prim_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1284,7 +1284,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                     seg_op: signature,
                                     accepted: idValidator
                                 })
-                                .limit(10)
+                                .limit(20)
                                 .orderBy('id', 'asc');
 
                             const sendData = await map.mappingRequests(requests)
@@ -1302,7 +1302,7 @@ const filterByBookingCycleSignatureValidator = async (booking, cycle,
                                 seg_op: signature,
                                 accepted: idValidator
                             })
-                            .limit(10)
+                            .limit(20)
                             .orderBy('id', 'asc');
 
                         const sendData = await map.mappingRequests(requests)

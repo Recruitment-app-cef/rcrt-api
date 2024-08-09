@@ -13,7 +13,7 @@ const filterByState = async (state) => {
         requests = await db('rcrt_all_elements')
             .select('*')
             .where('accepted', acceptedCondition, acceptedValue)
-            .limit(10)
+            .limit(20)
             .orderBy('id', 'asc');
 
         const sendData = await map.mappingRequests(requests)
@@ -33,7 +33,7 @@ const filterByValidator = async (idValidator) => {
         requests = await db('rcrt_all_elements')
             .select('*')
             .where('accepted', '=', idValidator)
-            .limit(10)
+            .limit(20)
             .orderBy('id', 'asc');
 
         const sendData = await map.mappingRequests(requests)
@@ -61,7 +61,7 @@ const filterByStateSignature = async (state, signature, options) => {
                             prim_op: signature
                         })
                         .where('accepted', acceptedCondition, acceptedValue)
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -73,7 +73,7 @@ const filterByStateSignature = async (state, signature, options) => {
                             seg_op: signature
                         })
                         .where('accepted', acceptedCondition, acceptedValue)
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -88,7 +88,7 @@ const filterByStateSignature = async (state, signature, options) => {
                         seg_op: signature
                     })
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -116,7 +116,7 @@ const filterBySignatureValidator = async (signature, options, idValidator) => {
                             prim_op: signature,
                             accepted: idValidator
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -130,7 +130,7 @@ const filterBySignatureValidator = async (signature, options, idValidator) => {
                             seg_op: signature,
                             accepted: idValidator
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -147,7 +147,7 @@ const filterBySignatureValidator = async (signature, options, idValidator) => {
                         seg_op: signature,
                         accepted: idValidator
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)

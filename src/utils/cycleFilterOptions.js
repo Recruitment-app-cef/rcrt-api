@@ -13,7 +13,7 @@ const filterByCycle = async (cycle) => {
         requests = await db('rcrt_all_elements')
             .select('*')
             .where('semester', cycle)
-            .limit(10)
+            .limit(20)
             .orderBy('id', 'asc');
 
         const sendData = await map.mappingRequests(requests)
@@ -36,7 +36,7 @@ const filterByCycleState = async (cycle, state) => {
             .select('*')
             .where('semester', cycle)
             .where('accepted', acceptedCondition, acceptedValue)
-            .limit(10)
+            .limit(20)
             .orderBy('id', 'asc');
 
         const sendData = await map.mappingRequests(requests)
@@ -61,7 +61,7 @@ const filterByCycleSignature = async (cycle, signature, options) => {
                             prim_op: signature,
                             semester: cycle
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -73,7 +73,7 @@ const filterByCycleSignature = async (cycle, signature, options) => {
                             seg_op: signature,
                             semester: cycle
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -88,7 +88,7 @@ const filterByCycleSignature = async (cycle, signature, options) => {
                         seg_op: signature,
                         semester: cycle
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -114,7 +114,7 @@ const filterByCycleValidator = async (cycle, idValidator) => {
                 semester: cycle,
                 accepted: idValidator
             })
-            .limit(10)
+            .limit(20)
             .orderBy('id', 'asc');
 
         const sendData = await map.mappingRequests(requests)
@@ -145,7 +145,7 @@ const filterByCycleStateSignature = async (cycle, state, signature, options) => 
                             prim_op: signature
                         })
                         .where('accepted', acceptedCondition, acceptedValue)
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -160,7 +160,7 @@ const filterByCycleStateSignature = async (cycle, state, signature, options) => 
                             seg_op: signature
                         })
                         .where('accepted', acceptedCondition, acceptedValue)
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -178,7 +178,7 @@ const filterByCycleStateSignature = async (cycle, state, signature, options) => 
                         seg_op: signature
                     })
                     .where('accepted', acceptedCondition, acceptedValue)
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
@@ -210,7 +210,7 @@ const filterByCycleSignatureValidator = async (cycle, signature, options, idVali
                             prim_op: signature,
                             accepted: idValidator
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -225,7 +225,7 @@ const filterByCycleSignatureValidator = async (cycle, signature, options, idVali
                             seg_op: signature,
                             accepted: idValidator
                         })
-                        .limit(10)
+                        .limit(20)
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -243,7 +243,7 @@ const filterByCycleSignatureValidator = async (cycle, signature, options, idVali
                         seg_op: signature,
                         accepted: idValidator
                     })
-                    .limit(10)
+                    .limit(20)
                     .orderBy('id', 'asc');
 
                 const sendData = await map.mappingRequests(requests)
