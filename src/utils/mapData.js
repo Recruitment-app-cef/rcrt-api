@@ -137,7 +137,7 @@ const mappingContactsAndSignatures = (telefonofijo, telefonomovil, primeraopcion
 //extra anidada
 
 const mappingRequests = async (requests) => {
-    
+
     //obteniendo identificadores de las solicitudes
     const elementsData = requests.map((object) => {
         return object.id
@@ -168,11 +168,56 @@ const mappingRequests = async (requests) => {
     return sendData
 }
 
+//función para mapear los semestres
+
+const mappingSemesters = (semesters, content) => {
+    let mappingSemesters = []
+
+    //obteniendo solamente aquellos semestres que cumplan con la 
+    //condición proveniente en la variable 'content'
+
+    mappingSemesters = semesters.filter((obj) => {
+        return obj.semester.includes(content)
+    })
+
+    return mappingSemesters
+}
+
+const concatSemesters = (firstCycle, secondCycle, thirdCycle) => {
+    var concatSemesters = []
+
+    //obteniendo arreglo de mayor tamaño
+    const maxLength = Math.max(firstCycle.length,secondCycle.length,thirdCycle.length)
+    
+    //concatenando semestres
+    /* for (let i = 0; i < maxLength; i++) {
+        if (i < secondCycle.length) {
+            concatSemesters.push(secondCycle[i].semester)
+        }
+        if (i < thirdCycle.length) {
+            concatSemesters.push(thirdCycle[i].semester)
+        }
+        if (i < firstCycle.length) {
+            concatSemesters.push(firstCycle[i].semester)
+        }
+    } */
+
+    concatSemesters = Array.from({length: maxLength})
+        .flatMap((_,i) => [
+            secondCycle[i],
+            thirdCycle[i],
+            firstCycle[i]
+        ].filter(Boolean))
+
+    return concatSemesters
+}
 
 module.exports = {
     mapData,
     mappingEmails,
     mappingSignatures,
     mappingContactsAndSignatures,
-    mappingRequests
+    mappingRequests,
+    mappingSemesters,
+    concatSemesters
 }
