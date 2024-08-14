@@ -94,7 +94,7 @@ const saveRequestData = async (req, res) => {
             accepted: 0,
             semester: mappedData[2].ciclo,
             confirmed: 0,
-            accepted_op: 1,
+            accepted_op: 0,
             picture: archivo,
             nota_seg_op: 0,
             curso_aprobado: 0 }

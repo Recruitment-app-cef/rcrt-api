@@ -5,6 +5,7 @@ const cycleFilter = require('../utils/cycleFilterOptions')
 const stateFilter = require('../utils/stateFilterOptions')
 const map = require('../utils/mapData')
 const signatureFilter = require('../utils/signatureFilterOptions')
+
 //función para obtener todas las solicitudes hechas en este nuevo ciclo
 const getRequests = async (req, res) => {
 
@@ -988,6 +989,40 @@ const getRequests = async (req, res) => {
 
 }
 
+//función para aceptar la solicitud deseada
+const acceptRequest = async (req, res) => {
+
+    //destructurando información obtenida
+    var { selectedOption, idUser, cycle, idAdmin } = req.body
+
+    //bloque para controlar las instrucciones para actualizar la solicitud 
+    //especificada
+    try {
+        const userRequestToUpdate = await db('rcrt_all_elements')
+            .where({
+                idnumber: idUser,
+                semester: cycle
+            })
+            .update({
+                accepted: idAdmin,
+                accepted_op: selectedOption,
+                confirmed: 1
+            }).returning('*')
+
+        if(userRequestToUpdate){
+            return res.status(200).json({message: "Actualizado"})
+        }else{
+            return res.status(304).json({message: "Solicitud no actualizada"})
+        }
+
+    } catch (error) {
+        console.error("Error al actualizar el estado de la solicitud: ", error)
+        return res.status(409).json({ message: "Error" })
+    }
+
+}
+
 module.exports = {
     getRequests,
+    acceptRequest
 }
