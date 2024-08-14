@@ -56,13 +56,13 @@ const obtainSemesters = async (req, res) => {
         
         //mapeando para ciclo 01
         const firstCycleSemesters = map.mappingSemesters(semesters, "Ciclo 01")
-        console.log(firstCycleSemesters)
+
         //mapeando para ciclo 02
         const secondCycleSemesters = map.mappingSemesters(semesters, "Ciclo 02")
-        console.log(secondCycleSemesters)
+
         //mapeando para ciclo 03
         const thirdCycleSemesters = map.mappingSemesters(semesters, "Ciclo 03")
-        console.log(thirdCycleSemesters)
+
         //concatenando ciclos
         const concatSemesters = map.concatSemesters(firstCycleSemesters, 
             secondCycleSemesters, thirdCycleSemesters)

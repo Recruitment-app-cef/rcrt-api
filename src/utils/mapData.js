@@ -184,32 +184,72 @@ const mappingSemesters = (semesters, content) => {
 }
 
 const concatSemesters = (firstCycle, secondCycle, thirdCycle) => {
+
+    //arreglo para concatenar cada primer y segundo ciclo de cada año
     var concatSemesters = []
 
-    //obteniendo arreglo de mayor tamaño
-    const maxLength = Math.max(firstCycle.length,secondCycle.length,thirdCycle.length)
-    
-    //concatenando semestres
-    /* for (let i = 0; i < maxLength; i++) {
-        if (i < secondCycle.length) {
-            concatSemesters.push(secondCycle[i].semester)
-        }
-        if (i < thirdCycle.length) {
-            concatSemesters.push(thirdCycle[i].semester)
-        }
-        if (i < firstCycle.length) {
-            concatSemesters.push(firstCycle[i].semester)
-        }
-    } */
+    //obteniendo cada segundo ciclo de cada año
+    const secondSemesters = secondCycle.map(obj => {
+        return obj.semester
+    })
 
-    concatSemesters = Array.from({length: maxLength})
-        .flatMap((_,i) => [
-            secondCycle[i],
-            thirdCycle[i],
-            firstCycle[i]
-        ].filter(Boolean))
+    //obteniendo cada primer ciclo de cada año
+    const firstSemesters = firstCycle.map(obj => {
+        return obj.semester
+    })
 
-    return concatSemesters
+    //obteniendo cada tercer ciclo de cada año
+    const thirdSemesters = thirdCycle.map(obj => {
+        return obj.semester
+    })
+
+    //obteniendo la longitud de cada arreglo para 
+    //guardar los semestres en base a estas
+    let firstCounter = firstCycle.length - 1
+    let secondCounter = secondCycle.length - 1
+    let thirdCounter = thirdCycle.length - 1
+
+    //concatenando los ciclos normales, es decir, primer y
+    //segundo ciclo de cada año
+    for (let i = 0; i < (firstCycle.length + secondCycle.length); i++) {
+
+        if (i % 2 == 0) {
+            if (firstCounter >= 0) {
+                concatSemesters.push(firstSemesters[firstCounter])
+                firstCounter--
+
+            } else if (firstCounter < 0) {
+                concatSemesters.push(secondSemesters[secondCounter])
+            }
+        } else if (i % 2 == 1) {
+            if (secondCounter >= 0) {
+                concatSemesters.push(secondSemesters[secondCounter])
+                secondCounter--
+            } else if (secondCounter < 0) {
+                concatSemesters.push(firstSemesters[firstCounter])
+            }
+        }
+    }
+
+    //arreglo para concatenar cada primer, segundo e interciclo de cada año
+    var finalConcatSemesters = []
+
+    concatSemesters.forEach(semester => {
+        if (semester.includes("Ciclo 02")) {
+            if (thirdCounter < 0) {
+                finalConcatSemesters.push(semester)
+            } else {
+                finalConcatSemesters.push(semester)
+                finalConcatSemesters.push(thirdSemesters[thirdCounter])
+                thirdCounter--
+            }
+        } else {
+            finalConcatSemesters.push(semester)
+        }
+    })
+
+
+    return finalConcatSemesters
 }
 
 module.exports = {
