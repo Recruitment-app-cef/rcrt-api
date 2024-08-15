@@ -25,8 +25,13 @@ const obtainCourses = async (req, res) => {
             return course
         })
 
-        if (mapedCourses) {
-            return res.status(200).json({ data: mapedCourses })
+        //Dando formato a los cursos
+        const coursesWithFormat = mapedCourses.map(obj => {
+            return obj.course
+        })
+
+        if (coursesWithFormat) {
+            return res.status(200).json({ data: coursesWithFormat })
         } else {
             return res.status(409).json({ message: "No se pudieron concatenar los cursos" })
         }
