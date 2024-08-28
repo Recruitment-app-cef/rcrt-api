@@ -58,7 +58,7 @@ const obtainSemesters = async (req, res) => {
             .count('* as count')
             .groupBy('semester')
             .orderBy('semester', 'desc')
-        
+
         //mapeando para ciclo 01
         const firstCycleSemesters = map.mappingSemesters(semesters, "Ciclo 01")
 
@@ -69,13 +69,13 @@ const obtainSemesters = async (req, res) => {
         const thirdCycleSemesters = map.mappingSemesters(semesters, "Ciclo 03")
 
         //concatenando ciclos
-        const concatSemesters = map.concatSemesters(firstCycleSemesters, 
+        const concatSemesters = map.concatSemesters(firstCycleSemesters,
             secondCycleSemesters, thirdCycleSemesters)
 
-        if(concatSemesters){
-            return res.status(200).json({message: concatSemesters})
-        }else{
-            return res.status(404).json({message: "semestres no encontrados"})
+        if (concatSemesters) {
+            return res.status(200).json({ message: concatSemesters })
+        } else {
+            return res.status(404).json({ message: "semestres no encontrados" })
         }
 
     } catch (error) {
@@ -85,7 +85,32 @@ const obtainSemesters = async (req, res) => {
 
 }
 
+//función para obtener al administrador deseado
+const getAdmin = async (req, res) => {
+
+    //obteniendo id del administrador
+    let id = req.query.id
+    
+    try {
+
+        //obteniendo usuario en base al identificador
+        let user = await db('usr_persons')
+            .where({username:id}).returning('*')
+
+        if (!user) {
+            return res.status(400).json({ message: "Usuario no encontrado" })
+        }
+
+        return res.status(200).json({ data: user })
+
+    } catch (error) {
+        console.error("error, no se pudo encontrar al usuario administrador", error)
+        return res.status(404).json({ message: "Usuario no encontrado" })
+    }
+}
+
 module.exports = {
     obtainCourses,
-    obtainSemesters
+    obtainSemesters,
+    getAdmin
 }

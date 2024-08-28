@@ -968,7 +968,6 @@ const getRequests = async (req, res) => {
             //obteniendo información principal
             requests = await db('rcrt_all_elements')
                 .select('*')
-                .limit(10)
                 .orderBy('id', 'asc');
 
             //enviando información para anidar la data necesaria

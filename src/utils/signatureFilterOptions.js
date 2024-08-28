@@ -16,7 +16,7 @@ const filterBySignature = async (signature, options) => {
                     requests = await db('rcrt_all_elements')
                         .select('*')
                         .where('prim_op', signature)
-                        .limit(20)
+                        
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -25,7 +25,7 @@ const filterBySignature = async (signature, options) => {
                     requests = await db('rcrt_all_elements')
                         .select('*')
                         .where('seg_op', signature)
-                        .limit(20)
+                        
                         .orderBy('id', 'asc');
 
                     const sendData = await map.mappingRequests(requests)
@@ -37,9 +37,8 @@ const filterBySignature = async (signature, options) => {
                     .select('*')
                     .where({
                         prim_op: signature,
-                        seg_op: signature
-                    })
-                    .limit(20)
+                        seg_op: sign                })
+                    
                     .orderBy('id', 'asc');
                     
                 const sendData = await map.mappingRequests(requests)
