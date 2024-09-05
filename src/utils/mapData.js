@@ -248,7 +248,6 @@ const concatSemesters = (firstCycle, secondCycle, thirdCycle) => {
         }
     })
 
-
     return finalConcatSemesters
 }
 
@@ -259,5 +258,5 @@ module.exports = {
     mappingContactsAndSignatures,
     mappingRequests,
     mappingSemesters,
-    concatSemesters
+    concatSemesters,
 }
