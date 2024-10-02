@@ -251,6 +251,8 @@ const updateRequestData = async (req, res) => {
         const findUser = await db('rcrt_all_elements')
             .where('idnumber', mappedData[0].carne)
 
+        console.log(findUser[0].semester)
+
         //obtención de fecha actual para almacenar en DB
         const fechaActual = new Date()
         const año = fechaActual.getFullYear()
@@ -326,39 +328,42 @@ const updateRequestData = async (req, res) => {
         let result
 
         if (findUser.length > 0) {
-
-            result = await db('rcrt_all_elements')
-                .where('idnumber', mappedData[0].carne)
-                .update({
-                    idnumber: mappedData[0].carne,
-                    firstname: mappedData[0].nombres,
-                    lastname: mappedData[0].apellidos,
-                    carrera: mappedData[1].carrera,
-                    address: 'none',
-                    deleted: 0,
-                    comments: comentario,
-                    nmaterias: mappedData[1].materiasaprobadas,
-                    cum: mappedData[1].cum,
-                    niv_est: nivestudio,
-                    prim_op: mappedData[2].primeraopcion,
-                    experiencia: mappedData[1].experiencia,
-                    fecha: fechaFormateada,
-                    nota: mappedData[2].nota1aopcion,
-                    es_remunerado: es_remunerado,
-                    seg_op: mappedData[2].segundaopcion,
-                    accepted: 0,
-                    semester: mappedData[2].ciclo,
-                    confirmed: 0,
-                    accepted_op: 0,
-                    picture: archivo,
-                    nota_seg_op: 0,
-                    curso_aprobado: 0
-                }).returning('*')
+            if(findUser[0].semester == mappedData[2].ciclo){
+                return res.status(409).json({message: "El ciclo no puede ser el mismo que el de un registro anterior"})
+            }else{
+                result = await db('rcrt_all_elements')
+                    .where('idnumber', mappedData[0].carne)
+                    .insert({
+                        idnumber: mappedData[0].carne,
+                        firstname: mappedData[0].nombres,
+                        lastname: mappedData[0].apellidos,
+                        carrera: mappedData[1].carrera,
+                        address: 'none',
+                        deleted: 0,
+                        comments: comentario,
+                        nmaterias: mappedData[1].materiasaprobadas,
+                        cum: mappedData[1].cum,
+                        niv_est: nivestudio,
+                        prim_op: mappedData[2].primeraopcion,
+                        experiencia: mappedData[1].experiencia,
+                        fecha: fechaFormateada,
+                        nota: mappedData[2].nota1aopcion,
+                        es_remunerado: es_remunerado,
+                        seg_op: mappedData[2].segundaopcion,
+                        accepted: 0,
+                        semester: mappedData[2].ciclo,
+                        confirmed: 0,
+                        accepted_op: 0,
+                        picture: archivo,
+                        nota_seg_op: 0,
+                        curso_aprobado: 0
+                    }).returning('*')
+            }
         }
 
         //mapeando emails
         const emailData = map.mappingEmails(mappedData[0].emails, result[0].id)
-        console.log(result)
+        
         //mapeando materias
         const signaturesData = map.mappingSignatures(mappedData[1].materiasproximas, result[0].id)
         //mapeando telefonos y opciones a colaborar

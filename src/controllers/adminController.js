@@ -993,7 +993,7 @@ const acceptRequest = async (req, res) => {
 
     //destructurando información obtenida
     var { selectedOption, idUser, cycle, idAdmin } = req.body
-
+    console.log(req.body)
     //bloque para controlar las instrucciones para actualizar la solicitud 
     //especificada
     try {

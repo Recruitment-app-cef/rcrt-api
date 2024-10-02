@@ -95,7 +95,7 @@ const getAdmin = async (req, res) => {
 
         //obteniendo usuario en base al identificador
         let user = await db('usr_persons')
-            .where({username:id}).returning('*')
+            .where({id:id}).returning('*')
 
         if (!user) {
             return res.status(400).json({ message: "Usuario no encontrado" })
