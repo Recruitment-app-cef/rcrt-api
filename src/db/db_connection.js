@@ -9,7 +9,7 @@ const db = require('knex')({
         port: '5432',
         user: 'postgres',
         database: 'master',
-        password: 'romer' 
+        password: 'Otragal_33' 
     }
 });
 

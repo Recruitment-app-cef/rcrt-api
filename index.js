@@ -22,7 +22,7 @@ app.listen(port, () => {
     console.log(`Servidor ejecutándose en http://localhost:${port}`);
 });
 
-const newLocal = './db/db_connection';
+const newLocal = './src/db/db_connection';
 //importando database para verificar conexión
 const db = require(newLocal)
 app.listen(db, () => {
@@ -30,10 +30,10 @@ app.listen(db, () => {
 })
 
 //rutas 
-const loginRoutes = require('./routes/loginRoute')
-const requestFormRoute = require('./routes/requestFormRoute')
-const adminRoute = require('./routes/adminRoute')
-const dataRoute = require('./routes/dataRoute')
+const loginRoutes = require('./src/routes/loginRoute')
+const requestFormRoute = require('./src/routes/requestFormRoute')
+const adminRoute = require('./src/routes/adminRoute')
+const dataRoute = require('./src/routes/dataRoute')
 //llamada a las rutas
 app.use('/auth', loginRoutes)
 app.use('/request', requestFormRoute)
