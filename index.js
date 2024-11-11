@@ -17,17 +17,15 @@ app.get('/prueba', (req, res) => {
     res.send('¡Hola Mundo con Node.js y Express!');
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${port}`);
-});
+const db = require('./src/db/db_connection');
 
-const newLocal = './src/db/db_connection';
-//importando database para verificar conexión
-const db = require(newLocal)
-app.listen(db, () => {
-    console.log(`conexión a base exitosa`)
-})
+//Probar la conexión a la base de datos
+db.raw('SELECT 1')
+    .then(() => {
+        console.log("Conexión a la base exitosa");
+    }).catch((error) => {
+        console.error("Error al conectar a la base de datos", error);
+    });
 
 //rutas 
 const loginRoutes = require('./src/routes/loginRoute')
@@ -39,3 +37,8 @@ app.use('/auth', loginRoutes)
 app.use('/request', requestFormRoute)
 app.use('/admin', adminRoute)
 app.use('/data', dataRoute)
+
+// Iniciar el servidor
+app.listen(port, () => {
+    console.log(`Servidor ejecutándose en http://localhost:${port}`);
+});

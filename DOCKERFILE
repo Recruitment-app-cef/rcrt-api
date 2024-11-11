@@ -1,0 +1,20 @@
+# imagen de Node.js como base
+FROM node:18.17.0
+
+# directorio de aplicación
+WORKDIR /usr/src/app
+
+# Copiar archivos .json al directorio de trabajo
+COPY package*.json ./
+
+# Instalación de dependencias de proyecto
+RUN npm install
+
+# Copiar el código del proyecto
+COPY . .
+
+# Exponer el puerto en el que va a correr la app
+EXPOSE 3000
+
+# Iniciar la aplicación
+CMD [ "npm", "start" ]

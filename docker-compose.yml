@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  backend: 
+    build:
+      context: .
+      dockerfile: DOCKERFILE
+    ports:
+      - "3000:3000" 
+    environment:
+      - PORT=3000
+      - DB_HOST=192.168.40.12
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=Otragal_33
+      - DB_NAME=master
+    networks:
+      - backend-network
+  
+networks: 
+  backend-network:
+    driver: bridge
